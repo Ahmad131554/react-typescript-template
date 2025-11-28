@@ -1,0 +1,47 @@
+/* src/index.css */
+
+@import "tailwindcss";
+@import "tw-animate-css"; /* optional, if you use the animation library */
+
+@custom-variant dark (&:is(.dark *));
+
+/* Light theme tokens */
+:root {
+  --radius: 0.625rem;
+  --background: #ffffff;
+  --foreground: #000000;
+  --primary: #10B981;
+  --primary-foreground: #ffffff;
+  /* Add more custom tokens as needed */
+}
+
+/* Dark theme tokens */
+.dark {
+  --background: #1e1e1e;
+  --foreground: #f3f3f3;
+  --primary: #22C55E;
+  --primary-foreground: #000000;
+  /* Add more dark overrides here */
+}
+
+body{background-color: #1e1e1e;}
+
+/* Map tokens into Tailwind theme variable namespaces */
+@theme inline {
+  --radius-md: var(--radius);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  /* Extend with whatever theme variables you need */
+}
+
+/* Base layer styles */
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+  }
+}
