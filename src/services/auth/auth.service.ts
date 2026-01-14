@@ -8,37 +8,44 @@ import type {
 
 export const authService = {
   login: async (credentials: LoginCredentials): Promise<AuthUser> => {
-    return apiClient.post<AuthUser>(ENDPOINTS.AUTH.LOGIN, credentials);
+    const response = await apiClient.post<AuthUser>(ENDPOINTS.AUTH.LOGIN, credentials);
+    return response.data;
   },
 
   signup: async (credentials: SignupCredentials): Promise<AuthUser> => {
-    return apiClient.post<AuthUser>(ENDPOINTS.AUTH.SIGNUP, credentials);
+    const response = await apiClient.post<AuthUser>(ENDPOINTS.AUTH.SIGNUP, credentials);
+    return response.data;
   },
 
   googleLogin: async (token: string): Promise<AuthUser> => {
-    return apiClient.post<AuthUser>(ENDPOINTS.AUTH.GOOGLE_LOGIN, { token });
+    const response = await apiClient.post<AuthUser>(ENDPOINTS.AUTH.GOOGLE_LOGIN, { token });
+    return response.data;
   },
 
   forgotPassword: async (email: string): Promise<{ message: string }> => {
-    return apiClient.post<{ message: string }>(ENDPOINTS.AUTH.FORGOT_PASSWORD, { email });
+    const response = await apiClient.post<{ message: string }>(ENDPOINTS.AUTH.FORGOT_PASSWORD, { email });
+    return response.data;
   },
 
   verifyOtp: async (email: string, otp: string): Promise<{ message: string }> => {
-    return apiClient.post<{ message: string }>(ENDPOINTS.AUTH.VERIFY_OTP, { email, otp });
+    const response = await apiClient.post<{ message: string }>(ENDPOINTS.AUTH.VERIFY_OTP, { email, otp });
+    return response.data;
   },
 
   resetPassword: async (email: string, otp: string, newPassword: string): Promise<{ message: string }> => {
-    return apiClient.post<{ message: string }>(ENDPOINTS.AUTH.RESET_PASSWORD, {
+    const response = await apiClient.post<{ message: string }>(ENDPOINTS.AUTH.RESET_PASSWORD, {
       email,
       otp,
       newPassword,
     });
+    return response.data;
   },
 
   changePassword: async (currentPassword: string, newPassword: string): Promise<{ message: string }> => {
-    return apiClient.post<{ message: string }>(ENDPOINTS.AUTH.CHANGE_PASSWORD, {
+    const response = await apiClient.post<{ message: string }>(ENDPOINTS.AUTH.CHANGE_PASSWORD, {
       currentPassword,
       newPassword,
     });
+    return response.data;
   },
 } as const;

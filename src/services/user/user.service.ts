@@ -4,19 +4,23 @@ import type { User, UpdateUserProfile } from '@/types/user';
 
 export const userService = {
   getUserById: async (id: string): Promise<User> => {
-    return apiClient.get<User>(ENDPOINTS.USER.GET_USER_BY_ID(id));
+    const response = await apiClient.get<User>(ENDPOINTS.USER.GET_USER_BY_ID(id));
+    return response.data;
   },
 
   updateProfile: async (data: UpdateUserProfile): Promise<User> => {
-    return apiClient.put<User>(ENDPOINTS.USER.UPDATE_PROFILE, data);
+    const response = await apiClient.put<User>(ENDPOINTS.USER.UPDATE_PROFILE, data);
+    return response.data;
   },
 
   deleteUser: async (id: string): Promise<{ message: string }> => {
-    return apiClient.delete<{ message: string }>(ENDPOINTS.USER.DELETE_USER(id));
+    const response = await apiClient.delete<{ message: string }>(ENDPOINTS.USER.DELETE_USER(id));
+    return response.data;
   },
 
   toggleUserStatus: async (id: string): Promise<User> => {
-    return apiClient.patch<User>(ENDPOINTS.USER.TOGGLE_STATUS(id));
+    const response = await apiClient.patch<User>(ENDPOINTS.USER.TOGGLE_STATUS(id));
+    return response.data;
   },
 
   getAllUsers: async (params?: {
@@ -39,6 +43,12 @@ export const userService = {
     const query = searchParams.toString();
     const url = query ? `${ENDPOINTS.USER.LIST}?${query}` : ENDPOINTS.USER.LIST;
 
-    return apiClient.get(url);
+    const response = await apiClient.get<{
+      users: User[];
+      total: number;
+      page: number;
+      totalPages: number;
+    }>(url);
+    return response.data;
   },
 } as const;

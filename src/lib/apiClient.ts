@@ -1,12 +1,14 @@
-
 import axios, {
   type AxiosRequestConfig,
   type AxiosError,
   type AxiosResponse,
+  type InternalAxiosRequestConfig,
 } from "axios";
 import { env } from "@/config/env";
 import { toast } from "sonner";
+import type { ApiError } from "@/types/api";
 
+// Create axios instance with default configuration
 const axiosInstance = axios.create({
   baseURL: env.API_URL,
   timeout: 50000,
@@ -16,28 +18,28 @@ const axiosInstance = axios.create({
   },
 });
 
-// Request Interceptor
+// Request interceptor: Add authentication token to requests
 axiosInstance.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem(env.ACCESS_TOKEN_KEY);
 
-    if (token) {
-      config.headers = config.headers ?? {};
+    if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error: AxiosError) => Promise.reject(error)
 );
 
-// Response Interceptor (Simple Version)
+// Response interceptor: Handle errors globally and return full response
 axiosInstance.interceptors.response.use(
-  (res: AxiosResponse) => res.data,
-  (error: AxiosError<any>) => {
-    const message = error.response?.data?.message || "API Error";
+  (response: AxiosResponse) => response,
+  (error: AxiosError<ApiError>) => {
+    const message = error.response?.data?.message || "An error occurred";
     toast.error(message);
 
+    // Clear token and redirect on authentication failure
     if (error.response?.status === 401) {
       localStorage.removeItem(env.ACCESS_TOKEN_KEY);
     }
@@ -46,38 +48,71 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-// Minimal Wrapper Class
+// API Client class with typed HTTP methods
 class APIClient {
-  get<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return axiosInstance.get(url, config);
+  /**
+   * GET request
+   * @param url - API endpoint
+   * @param config - Axios request configuration
+   * @returns Promise with the full Axios response
+   */
+  get<T>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return axiosInstance.get<T>(url, config);
   }
 
-  post<T = any>(
+  /**
+   * POST request
+   * @param url - API endpoint
+   * @param data - Request payload
+   * @param config - Axios request configuration
+   * @returns Promise with the full Axios response
+   */
+  post<T>(
     url: string,
-    data?: any,
+    data?: unknown,
     config?: AxiosRequestConfig
-  ): Promise<T> {
-    return axiosInstance.post(url, data, config);
+  ): Promise<AxiosResponse<T>> {
+    return axiosInstance.post<T>(url, data, config);
   }
 
-  put<T = any>(
+  /**
+   * PUT request
+   * @param url - API endpoint
+   * @param data - Request payload
+   * @param config - Axios request configuration
+   * @returns Promise with the full Axios response
+   */
+  put<T>(
     url: string,
-    data?: any,
+    data?: unknown,
     config?: AxiosRequestConfig
-  ): Promise<T> {
-    return axiosInstance.put(url, data, config);
+  ): Promise<AxiosResponse<T>> {
+    return axiosInstance.put<T>(url, data, config);
   }
 
-  delete<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    return axiosInstance.delete(url, config);
-  }
-
-  patch<T = any>(
+  /**
+   * PATCH request
+   * @param url - API endpoint
+   * @param data - Request payload
+   * @param config - Axios request configuration
+   * @returns Promise with the full Axios response
+   */
+  patch<T>(
     url: string,
-    data?: any,
+    data?: unknown,
     config?: AxiosRequestConfig
-  ): Promise<T> {
-    return axiosInstance.patch(url, data, config);
+  ): Promise<AxiosResponse<T>> {
+    return axiosInstance.patch<T>(url, data, config);
+  }
+
+  /**
+   * DELETE request
+   * @param url - API endpoint
+   * @param config - Axios request configuration
+   * @returns Promise with the full Axios response
+   */
+  delete<T>(url: string, config?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+    return axiosInstance.delete<T>(url, config);
   }
 }
 

@@ -2,7 +2,7 @@
 import type { RouteObject } from "react-router";
 import HomePage from "@/pages/HomePage";
 import RootLayout from "@/layouts/RootLayout";
-import NotFound from "@/shared/pages/NotFound";
+import NotFound from "@/components/common/NotFound";
 
 // This is your single source of truth for routes
 export const routes: RouteObject[] = [

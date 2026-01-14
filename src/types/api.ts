@@ -1,17 +1,16 @@
-export interface ApiSuccess<T = unknown> {
-  status?: number | string;
+// Standard API response wrapper
+export interface ApiResponse<T = unknown> {
   data: T;
   message?: string;
+  status?: number | string;
 }
 
+// Error response from API
 export interface ApiError {
   message: string;
   status?: number;
   errors?: Record<string, string[]>;
 }
 
-export interface UploadResponse {
-  image: string;
-}
-
-export type ApiResponse<T = unknown> = ApiSuccess<T> | UploadResponse | T[] | T;
+// Legacy alias for backward compatibility
+export type ApiSuccess<T = unknown> = ApiResponse<T>;
