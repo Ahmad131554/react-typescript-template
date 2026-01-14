@@ -1,6 +1,7 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import { Button } from "@/shared/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/shared/ui/card";
+
 
 interface Props {
   children: ReactNode;
@@ -50,6 +51,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </Button>
             </CardContent>
           </Card>
+          showing the error here
         </div>
       );
     }

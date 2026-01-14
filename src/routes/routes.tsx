@@ -1,8 +1,8 @@
 // src/routes/routes.tsx
 import type { RouteObject } from "react-router";
-import RootLayout from "../layouts/RootLayout";
-import HomePage from "../features/home/pages/index";
-import NotFound from "../shared/pages/NotFound";
+import HomePage from "@/pages/HomePage";
+import RootLayout from "@/layouts/RootLayout";
+import NotFound from "@/shared/pages/NotFound";
 
 // This is your single source of truth for routes
 export const routes: RouteObject[] = [
