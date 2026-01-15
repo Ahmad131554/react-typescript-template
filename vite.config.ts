@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     port: 3001,        // ← change this to your desired port
-    strictPort: true   // optional: fails if port is taken
+    strictPort: false   // optional: fails if port is taken
   },
   resolve: {
     alias: {
